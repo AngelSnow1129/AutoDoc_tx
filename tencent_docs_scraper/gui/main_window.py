@@ -106,26 +106,15 @@ class MainWindow(QMainWindow):
 
 
     def start_fetching(self):
-        url = self.url_input.text()
+        # 从配置文件中读取URL
+        config = configparser.ConfigParser()
+        config.read('url.ini')
+        url = config.get('URLs', 'tencent_sheet_url', fallback="")
+        auth_file = "auth_state.json"
+
         if not url:
-            QMessageBox.warning(self, "Warning", "Please enter a URL.")
+            QMessageBox.warning(self, "Warning", "URL not found in url.ini. Please check the configuration.")
             return
-
-        self.fetch_button.setEnabled(False)
-        self.status_label.setText("Fetching data... please wait.")
-
-        self.thread = QThread()
-        self.worker = Worker(url, self.auth_file)
-        self.worker.moveToThread(self.thread)
-
-        self.thread.started.connect(self.worker.run)
-        self.worker.finished.connect(self.display_data)
-        self.worker.error.connect(self.on_error)
-        self.worker.finished.connect(self.thread.quit)
-        self.worker.finished.connect(self.worker.deleteLater)
-        self.thread.finished.connect(self.thread.deleteLater)
-
-        self.thread.start()
 
     def display_data(self, df):
         if df is not None and not df.empty:

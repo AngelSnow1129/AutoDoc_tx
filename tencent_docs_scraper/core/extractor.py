@@ -48,10 +48,13 @@ async def fetch_sheet_data(url: str, auth_file: str) -> pd.DataFrame:
             # 使用json_normalize处理可能嵌套的JSON
             # 这里的 'data.records' 是一个假设的路径，需要根据实际API响应调整
             try:
+                # 腾讯文档的API响应结构可能非常复杂，这里假设数据在 data.records 中
+                # 实际可能需要更复杂的解析，例如 data.sheet.cells 或 data.sheet.rows
                 df = pd.json_normalize(captured_data['data']['records'])
                 return df
             except KeyError as e:
                 print(f"JSON structure unexpected. Key not found: {e}")
+                print("请检查腾讯文档API的实际响应结构，并调整 extractor.py 中的解析逻辑。")
                 return pd.DataFrame() # 返回空DataFrame
         else:
             print("Failed to capture target API response.")
