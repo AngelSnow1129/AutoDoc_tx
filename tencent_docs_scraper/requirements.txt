@@ -1,0 +1,6 @@
+playwright~=1.42
+pandas~=2.2
+pyotp~=2.9
+pyzbar~=0.1.9
+Pillow~=10.0
+PySide6~=6.7
