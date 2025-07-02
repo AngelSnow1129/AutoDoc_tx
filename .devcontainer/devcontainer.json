@@ -1,0 +1,88 @@
+{
+  "name": "Go & Vue Full-Stack Dev Environment",
+  // 使用 docker-compose.yml 文件来定义和启动服务
+  "dockerComposeFile": "docker-compose.yml",
+  // 指定在 docker-compose.yml 中要附加 VS Code 的服务
+  "service": "app",
+  // 指定容器中的工作目录
+  "workspaceFolder": "/workspace",
+
+  // 自定义 VS Code 编辑器和插件
+  "customizations": {
+    "vscode": {
+      // 插件列表
+      "extensions": [
+        // Go 语言支持
+        "golang.go",
+
+        // Vue.js 支持 (Volar)
+        "Vue.volar",
+        "vue.vscode-typescript-vue-plugin",
+
+        // Shell 脚本支持
+        "timonwong.shellcheck",
+        "foxundermoon.shell-format",
+
+        // 数据库客户端
+        "cweijan.vscode-mysql-client2", // MySQL
+        "cweijan.redis-client-pro",     // Redis
+
+        // Docker & Git
+        "ms-azuretools.vscode-docker",
+        "eamodio.gitlens",
+
+        // 文件格式支持
+        "redhat.vscode-yaml",
+        "yzhang.markdown-all-in-one",
+        "davidanson.vscode-markdownlint",
+
+        // 监控和常用工具
+        "nexmoe.monitor-pro",
+        "mutantdino.resourcemonitor",
+        "esbenp.prettier-vscode", // 代码格式化
+        "EditorConfig.EditorConfig", // 统一编码风格
+        "ms-vsliveshare.vsliveshare", // 实时协作
+        "GitHub.copilot" // AI 编程助手
+      ],
+      // 编辑器设置
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/bin/zsh"
+          }
+        },
+        "go.toolsManagement.autoUpdate": true,
+        "go.useLanguageServer": true,
+        "editor.formatOnSave": true,
+        "[go]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "golang.go"
+        },
+        "[vue]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[markdown]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        }
+      }
+    }
+  },
+
+  // 在容器创建后执行的命令
+  "postCreateCommand": "sudo chown vscode /workspace && go mod tidy && go install golang.org/x/tools/gopls@latest && (cd frontend && pnpm install || true)",
+
+  // 转发端口，以便在本地浏览器中访问容器内的服务
+  "forwardPorts": [
+    3000, // Go 后端服务
+    8080, // Vue 前端服务
+    3306, // MySQL
+    6379  // Redis
+  ],
+
+  // 指定远程容器的运行用户
+  "remoteUser": "vscode"
+}

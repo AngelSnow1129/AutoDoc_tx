@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # 主应用开发容器
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/workspace:cached
+    # 从 .env 文件加载环境变量到 app 服务中
+    env_file:
+      - ../.env
+    command: sleep infinity
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+
+  # MySQL 数据库服务
+  db:
+    image: mysql:8.0
+    container_name: dev-mysql
+    restart: unless-stopped
+    # 从 .env 文件加载环境变量
+    env_file:
+      - ../.env
+    # 将 .env 文件中的变量映射到 MySQL 容器内部所需的环境变量
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:3306"
+    volumes:
+      # 挂载数据卷以持久化数据
+      - mysql-data:/var/lib/mysql
+      # 挂载初始化脚本，容器首次启动时会自动执行此目录下的 .sql, .sh 文件
+      - ./mysql:/docker-entrypoint-initdb.d
+
+  # Redis 缓存服务
+  redis:
+    image: redis:7.0-alpine
+    container_name: dev-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  mysql-data:
+  redis-data:
+
