@@ -1,29 +1,4 @@
 {
-  "name": "Go & Vue Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
-
-  // 安装 Go 和 Node.js
-  "features": {
-    "ghcr.io/devcontainers/features/go:1": {
-      "version": "latest"
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "lts"
-    }
-  },
-
-  // 转发端口
-  "forwardPorts": [
-    8080, // Go 后端服务
-    5173  // Vue 前端开发服务
-  ],
-
-  // Codespaces 生命周期钩子
-  "postCreateCommand": "chmod +x /workspaces/AutoDoc_tx/tools/init_gemlnicli.sh && /workspaces/AutoDoc_tx/tools/init_gemlnicli.sh && go version && node --version && npm --version",
-  "postAttachCommand": {
-    "server": "go run main.go"
-  },
-
   // 自定义 VS Code 编辑器和插件
   "customizations": {
     "vscode": {
@@ -64,8 +39,6 @@
       // 注意：为了更好地协作，部分设置移到了 .vscode/settings.json
       "settings": {}
     }
-  },
+  }
 
-  // 在容器中以非 root 用户运行
-  "remoteUser": "vscode"
 }
