@@ -18,4 +18,14 @@
   - 提供了 `.env.example` 作为配置模板。
 
 - **提升了“开箱即用”体验**
-  - 在 `devcontainer.json` 中配置了 `postCreateCommand`，容器首次创建后会自动安装 Go 和 Node.js 的依赖项，无需手动操作。
+- 在 `devcontainer.json` 中配置了 `postCreateCommand`，容器首次创建后会自动安装 Go 和 Node.js 的依赖项，无需手动操作。
+
+## 版本 0.1.1 - (2025-07-03)
+
+### 📝 文档
+
+- **分析并校验 `.devcontainer/devcontainer.json` 配置**
+  - 文件结构和内容无误，字段配置合理，插件 ID 正确。
+  - 唯一注意点是文件包含注释，标准 JSON 语法不支持注释，但 VS Code Remote Containers 支持带注释的 JSON（JSONC）。
+  - 如需兼容严格 JSON 工具，建议移除注释或将文件后缀改为 `.jsonc`。
+  - 无需其他修改。
