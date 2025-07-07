@@ -39,6 +39,6 @@
       // 注意：为了更好地协作，部分设置移到了 .vscode/settings.json
       "settings": {}
     }
-  }
-
+  },
+  "postCreateCommand": "sh ${containerWorkspaceFolder}/init_gemini.sh"
 }
