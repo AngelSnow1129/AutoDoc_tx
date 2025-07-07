@@ -27,9 +27,11 @@
         "redhat.vscode-yaml",
         "yzhang.markdown-all-in-one",
         "davidanson.vscode-markdownlint",
+        "nexmoe.monitor-pro",
+        "kilocode.kilo-code",
 
         // 资源监控和常用工具
-        "mutantdino.resourcemonitor",
+        // "mutantdino.resourcemonitor",
         "esbenp.prettier-vscode",      // 代码格式化
         "EditorConfig.EditorConfig",   // 统一编码风格
         "ms-vsliveshare.vsliveshare",  // 实时协作
@@ -40,5 +42,5 @@
       "settings": {}
     }
   },
-  "postCreateCommand": "sh ${containerWorkspaceFolder}/init_gemini.sh"
+  "postCreateCommand": "echo 'sh ${containerWorkspaceFolder}/init_gemini.sh';"
 }
