@@ -1,5 +1,15 @@
 # 更新日志
 
+## 版本 0.1.3 - (2025-07-07)
+
+### ♻️ 重构
+
+- **重构：迁移 `tencent_docs_scraper` 到 `docs_scraper` 并更新依赖**
+  - 将抓取逻辑从 `tencent_docs_scraper` 迁移到 `docs_scraper`。
+  - 更新了二进制文件并添加了 `auth_state.json`。
+  - 添加了 `docs/page_source.html`。
+  - 修改了 `prompts.log`。
+
 ## 版本 0.1.2 - (2025-07-07)
 
 ### ✨ 新功能

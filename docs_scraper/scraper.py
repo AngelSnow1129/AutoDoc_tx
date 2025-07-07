@@ -112,8 +112,10 @@ def get_sheet_data(target_url, output_dir, html_output_file, csv_output_file):
             with open(html_output_file, "w", encoding="utf-8") as f:
                 f.write(driver.page_source)
             print(f"HTML 源代码已保存到: {html_output_file}")
-            for entry in driver.get_log('performance'):
-                print(entry)
+            with open(os.path.join(output_dir, "performance_log.txt"), "w", encoding="utf-8") as f:
+                for entry in driver.get_log('performance'):
+                    f.write(str(entry) + "\n")
+            print(f"性能日志已保存到: {os.path.join(output_dir, "performance_log.txt")}")
     except Exception as e:
         print(f"处理页面时发生错误: {e}")
     finally:
