@@ -1,5 +1,27 @@
 # 更新日志
 
+## 版本 0.1.2 - (2025-07-07)
+
+### ✨ 新功能
+
+- **新增文档抓取模块与开发工具环境配置**
+  - 此提交引入了新的文档抓取工具 (`tencent_docs_scraper2`)，并在 `tools/` 目录下建立了结构化的开发环境。
+  - 主要变更包括：
+    - **抓取模块更新**：移除了旧的 `Pro2` 模块，替换为 `tencent_docs_scraper2`，并包含了其 Python 依赖和单元测试。集成了 `chrome-headless-shell` 和 `chromedriver` 二进制文件，用于无头浏览器操作。
+    - **开发工具集成**：新增 `tools/` 目录，包含 Go 后端项目、前端项目以及相关的配置文件（`.editorconfig`, `.env`, `.vscode/settings.json`）。
+    - **环境配置更新**：更新了 `.devcontainer/devcontainer.json` 和 `.env` 以支持新的工具和抓取模块。
+    - **其他**：新增 `.kilocode/mcp.json`，并对 `init_gemini.sh` 和 `docs/population_data.csv` 进行了小幅更新。
+
+## 版本 0.1.1 - (2025-07-03)
+
+### 📝 文档
+
+- **分析并校验 `.devcontainer/devcontainer.json` 配置**
+  - 文件结构和内容无误，字段配置合理，插件 ID 正确。
+  - 唯一注意点是文件包含注释，标准 JSON 语法不支持注释，但 VS Code Remote Containers 支持带注释的 JSON（JSONC）。
+  - 如需兼容严格 JSON 工具，建议移除注释或将文件后缀改为 `.jsonc`。
+  - 无需其他修改。
+
 ## 版本 0.1.0 - (2025-07-02)
 
 ### ✨ 新功能
@@ -19,13 +41,3 @@
 
 - **提升了“开箱即用”体验**
 - 在 `devcontainer.json` 中配置了 `postCreateCommand`，容器首次创建后会自动安装 Go 和 Node.js 的依赖项，无需手动操作。
-
-## 版本 0.1.1 - (2025-07-03)
-
-### 📝 文档
-
-- **分析并校验 `.devcontainer/devcontainer.json` 配置**
-  - 文件结构和内容无误，字段配置合理，插件 ID 正确。
-  - 唯一注意点是文件包含注释，标准 JSON 语法不支持注释，但 VS Code Remote Containers 支持带注释的 JSON（JSONC）。
-  - 如需兼容严格 JSON 工具，建议移除注释或将文件后缀改为 `.jsonc`。
-  - 无需其他修改。

@@ -65,3 +65,13 @@ code --install-extension roo-cline-3.22.1.vsix
     }
   },
 
+
+
+自动执行以下操作：
+ 添加所有文件变更。
+ 使用 git diff --stat 来分析哪些文件被修改了。
+ 基于文件变更列表生成一个提交信息 (commit message)。
+ 执行 git commit。
+ 将新的提交信息追加到 CHANGELOG.md 文件。
+ 推送到远程仓库。
+
