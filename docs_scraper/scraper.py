@@ -20,8 +20,8 @@ HTML_OUTPUT_FILE = os.path.join(OUTPUT_DIR, "page_source.html")
 CSV_OUTPUT_FILE = os.path.join(OUTPUT_DIR, "tencent_sheet_data.csv")
 
 # 定义二进制文件路径
-CHROME_BINARY_PATH = os.path.abspath("bin/chrome-headless-shell")
-CHROMEDRIVER_BINARY_PATH = os.path.abspath("bin/chromedriver")
+CHROME_BINARY_PATH = os.path.abspath("../bin/chrome-headless-shell-linux64/chrome-headless-shell")
+CHROMEDRIVER_BINARY_PATH = os.path.abspath("../bin/chromedriver-linux64/chromedriver")
 
 def extract_data_from_html(page_source):
     """
@@ -30,18 +30,12 @@ def extract_data_from_html(page_source):
     soup = BeautifulSoup(page_source, 'html.parser')
     table_data = []
     
-    # 查找所有行
-    rows = soup.select('.table-row')
-    if not rows:
-        # 如果找不到，就尝试另一种策略
-        rows = soup.select('[class*="row"]')
+    # 查找所有可能的行元素
+    rows = soup.find_all('div', class_=lambda x: x and ('row' in x or 'table-row' in x))
 
     for row in rows:
-        # 查找行内所有单元格
-        cells = row.select('div[class*="cell-text"]')
-        if not cells:
-            # 如果找不到，就尝试另一种策略
-            cells = row.select('[class*="cell"]')
+        # 查找行内所有可能的单元格元素
+        cells = row.find_all('div', class_=lambda x: x and ('cell' in x or 'cell-text' in x))
         
         # 提取单元格文本
         cell_texts = [cell.get_text(strip=True) for cell in cells]
@@ -64,6 +58,7 @@ def get_sheet_data(target_url, output_dir, html_output_file, csv_output_file):
     options.add_argument('--disable-gpu')
     options.add_argument("user-agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'")
     options.binary_location = CHROME_BINARY_PATH
+    options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
 
     service = Service(executable_path=CHROMEDRIVER_BINARY_PATH)
     
@@ -74,10 +69,15 @@ def get_sheet_data(target_url, output_dir, html_output_file, csv_output_file):
         driver.get(target_url)
         
         print("等待页面加载...")
-        WebDriverWait(driver, 60).until(
+        WebDriverWait(driver, 120).until(
             EC.presence_of_element_located((By.ID, "sheet-container"))
         )
-        time.sleep(15)
+        time.sleep(30)
+
+        # 模拟滚动以加载更多内容
+        print("模拟滚动页面...")
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(10) # 再次等待内容加载
 
         print("页面加载完成，正在提取表格内容...")
         page_source = driver.page_source
@@ -107,6 +107,13 @@ def get_sheet_data(target_url, output_dir, html_output_file, csv_output_file):
 
     except TimeoutException:
         print("错误：等待页面加载超时。")
+        if driver:
+            os.makedirs(output_dir, exist_ok=True)
+            with open(html_output_file, "w", encoding="utf-8") as f:
+                f.write(driver.page_source)
+            print(f"HTML 源代码已保存到: {html_output_file}")
+            for entry in driver.get_log('performance'):
+                print(entry)
     except Exception as e:
         print(f"处理页面时发生错误: {e}")
     finally:

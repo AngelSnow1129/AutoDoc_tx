@@ -75,3 +75,6 @@ code --install-extension roo-cline-3.22.1.vsix
  将新的提交信息追加到 CHANGELOG.md 文件。
  推送到远程仓库。
 
+
+根据readme对于@/workspaces/AutoDoc_tx/tencent_docs_scraper/gui/main_window.py，完成相应的excel测试。
+
